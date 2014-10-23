@@ -1,0 +1,5 @@
+pet_traffic_king_store:
+    resource: "@PetTrafficKingStoreBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
