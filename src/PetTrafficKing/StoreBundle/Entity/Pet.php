@@ -63,13 +63,6 @@ class Pet
      */
     private $price;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="price2", type="string", length=255)
-     */
-    private $price2;
-
 
     /**
      * Get id
