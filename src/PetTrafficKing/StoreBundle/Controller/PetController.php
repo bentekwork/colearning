@@ -27,6 +27,7 @@ class PetController extends Controller
      */
     public function indexAction()
     {
+        $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('PetTrafficKingStoreBundle:Pet')->findAll();
@@ -38,7 +39,7 @@ class PetController extends Controller
     /**
      * Creates a new Pet entity.
      *
-     * @Route("/", name="_create")
+     * @Route("/admin", name="_create")
      * @Method("POST")
      * @Template("PetTrafficKingStoreBundle:Pet:new.html.twig")
      */
@@ -84,7 +85,7 @@ class PetController extends Controller
     /**
      * Displays a form to create a new Pet entity.
      *
-     * @Route("/new", name="_new")
+     * @Route("/admin/new", name="_new")
      * @Method("GET")
      * @Template()
      */
@@ -127,7 +128,7 @@ class PetController extends Controller
     /**
      * Displays a form to edit an existing Pet entity.
      *
-     * @Route("/{id}/edit", name="_edit")
+     * @Route("/admin/{id}/edit", name="_edit")
      * @Method("GET")
      * @Template()
      */
@@ -172,7 +173,7 @@ class PetController extends Controller
     /**
      * Edits an existing Pet entity.
      *
-     * @Route("/{id}", name="_update")
+     * @Route("/admin/{id}", name="_update")
      * @Method("PUT")
      * @Template("PetTrafficKingStoreBundle:Pet:edit.html.twig")
      */
@@ -205,7 +206,7 @@ class PetController extends Controller
     /**
      * Deletes a Pet entity.
      *
-     * @Route("/{id}", name="_delete")
+     * @Route("/admin/{id}", name="_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)

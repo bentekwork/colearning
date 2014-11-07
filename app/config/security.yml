@@ -1,12 +1,24 @@
 security:
-    providers:
-        in_memory:
-            memory: ~
 
     firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
-        default:
+        secure_area:
+            pattern: ^/
             anonymous: ~
+            form_login:
+                login_path: /login
+                check_path: /login_check
+            logout:
+                path: /logout
+                target: /
+
+    access_control:
+        - { path: ^/admin, roles: ROLE_ADMIN }
+
+    providers:
+        in_memory:
+            memory:
+                users:
+                    ben: { password: mypassword, roles: ROLE_ADMIN }
+
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext

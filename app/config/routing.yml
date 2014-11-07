@@ -3,3 +3,9 @@ pet_traffic_king_store:
     type:     annotation
     prefix:   /
 
+login_check:
+    path: /login_check
+
+logout:
+    path: /logout
+

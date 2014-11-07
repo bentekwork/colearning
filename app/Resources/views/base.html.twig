@@ -17,6 +17,25 @@
     <![endif]-->
 </head>
 <body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Pet Traffic King</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                {% block navigation %}
+                    {% if app.user  %}
+                        <li><a href="/logout">Logout</a></li>
+                    {% else %}
+                        <li><a href="/login">Login</a></li>
+
+                    {% endif %}
+                {% endblock %}
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
 <div class="container">
     {% block body %}{% endblock %}
 </div>
