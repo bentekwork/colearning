@@ -6,50 +6,56 @@
 {% endblock %}
 {% block body -%}
     <h1>Pet list</h1>
-
-    <table class="table records_list">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Temperament</th>
-                <th>Breed</th>
-                <th>Color</th>
-                <th>Price</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody class="table-striped">
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-inline" role="form" action="" method="get" style="margin-bottom: 10px;">
+                <div class="form-group">
+                    <label class="sr-only" for="type">Type</label>
+                    <input class="form-control" placeholder="Type" type="text" name="type" value="{{ (filters.type is defined) ? filters.type : '' }}" />
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="breed">Breed</label>
+                    <input class="form-control" placeholder="Breed" type="text" name="breed" value="{{ (filters.breed is defined) ? filters.breed : '' }}" />
+                </div>
+                <button class="btn btn-default" type="submit">Filter</button>
+                <a href="/" class="btn btn-default">Reset</a>
+            </form>
+        </div>
+    </div>
+    {% if filters %}
+    <div class="alert alert-info">You searched for {{ filters|join(', ') }}</div>
+    {% endif %}
+    <div class="row">
         {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.name }}</td>
-                <td>{{ entity.type }}</td>
-                <td>{{ entity.temperament }}</td>
-                <td>{{ entity.breed }}</td>
-                <td>{{ entity.color }}</td>
-                <td>{{ entity.price }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
-        <ul>
-        <li>
-            <a href="{{ path('_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
+        <div class="col-md-4">
+            <div class="thumbnail">
+                <a href="{{ path('_show', { 'id': entity.id }) }}">
+                    <img src="http://placehold.it/350x200" />
+                </a>
+                <div class="caption">
+                    <h4> <span class="label label-default pull-right"> ${{ entity.price }}</span></h4>
+                    <h3><a href="{{ path('_show', { 'id': entity.id }) }}">{{ entity.name }}</a></h3>
+                    <p>Type: {{ entity.type }}</p>
+                    <p>Temperament: {{ entity.temperament }}</p>
+                    <p>Breed: {{ entity.breed }}</p>
+                    <p>Color: {{ entity.color }}</p>
+                    <a href="{{ path('_show', { 'id': entity.id }) }}" class="btn btn-primary">Details</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a class="btn btn-primary" href="{{ path('_edit', { 'id': entity.id }) }}">Edit {{ entity.name }}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% if is_granted('ROLE_ADMIN') %}
+        <div class="col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <a class="btn btn-primary" href="{{ path('_new') }}">Add a Pet</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
     {% endblock %}

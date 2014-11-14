@@ -25,15 +25,23 @@ class PetController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $user = $this->getUser();
+
+        $filters = $request->query->all();
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('PetTrafficKingStoreBundle:Pet')->findAll();
+        foreach($filters as $key => $filter){
+            if(empty($filter)){
+                unset($filters[$key]);
+            }
+        }
+
+        $entities = $em->getRepository('PetTrafficKingStoreBundle:Pet')->getByFilters($filters);
 
         return array(
             'entities' => $entities,
+            'filters' => $filters
         );
     }
     /**

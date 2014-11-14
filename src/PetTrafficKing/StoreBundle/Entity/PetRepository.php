@@ -12,4 +12,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class PetRepository extends EntityRepository
 {
+    public function getByFilters($filters)
+    {
+        $pets = $this->getEntityManager()
+            ->getRepository('PetTrafficKingStoreBundle:Pet')
+            ->findBy($filters);
+
+        return $pets;
+    }
 }
