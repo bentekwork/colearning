@@ -37,6 +37,18 @@
     </div>
 </nav>
 <div class="container">
+
+    {% for noticeMessage in app.session.flashbag.get('notice') %}
+        <div class="alert alert-success">
+            {{ noticeMessage }}
+        </div>
+    {% endfor %}
+
+    {% for errorMessage in app.session.flashbag.get('error') %}
+        <div class="alert alert-danger">
+            {{ errorMessage }}
+        </div>
+    {% endfor %}
     {% block body %}{% endblock %}
 </div>
 
@@ -45,7 +57,7 @@
 {% block javascripts %}
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="{{ asset('bundles/pettraffickingstorejs/bootstrap.min.js') }}"></script>
+<script src="{{ asset('bundles/pettraffickingstore/js/bootstrap.min.js') }}"></script>
 {% endblock %}
 </body>
 </html>
