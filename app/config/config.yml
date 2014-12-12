@@ -28,6 +28,9 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        stripe_secret_key: "%stripe_secret_key%"
+        stripe_publishable_key: "%stripe_publishable_key%"
 
 # Assetic Configuration
 assetic:
@@ -70,3 +73,9 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+services:
+    stripe:
+        class: PetTrafficKing\StoreBundle\DependencyInjection\Stripe
+        arguments: ["%stripe_secret_key%", "%stripe_end_point%"]
+

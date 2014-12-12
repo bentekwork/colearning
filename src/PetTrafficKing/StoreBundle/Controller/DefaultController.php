@@ -18,7 +18,7 @@ class DefaultController extends Controller
     public function buyAction(Request $request, $pet_id)
     {
         $pet = $this->getDoctrine()->getRepository('PetTrafficKingStoreBundle:Pet')->find($pet_id);
-        $form = $this->createFormBuilder()
+        $form = $this->createFormBuilder(null, array('attr' => array('id' => 'payment-form')))
             ->add('firstname', 'text',
                 array('attr' => array('class' => 'form-control'),
                 'label' => 'First',
@@ -62,12 +62,33 @@ class DefaultController extends Controller
                 )
             )
             ->add('creditcard', 'text',
-                array('attr' => array('class' => 'form-control'),
-                    'constraints' => array(
-                        new Luhn(),
-                    ),
+                array('attr' => array('class' => 'form-control creditcard', 'data-stripe' => 'number'),
+
                 )
             )
+            ->add('expmonth', 'text',
+                array(
+                    'attr' => array('class' => 'form-control', 'data-stripe' => 'exp-month'),
+                    'label' => 'Expiration Month',
+                    'block_name' => 'thirds',
+                )
+            )
+            ->add('expyear', 'text',
+                array(
+                    'attr' => array('class' => 'form-control', 'data-stripe' => 'exp-year'),
+                    'label' => 'Expiration Year',
+                    'block_name' => 'thirds',
+                )
+            )
+            ->add('cvv', 'text',
+                array(
+                    'attr' => array('class' => 'form-control', 'data-stripe' => 'cvc'),
+                    'label' => 'CVV',
+                    'block_name' => 'thirds',
+
+                )
+            )
+            ->add('token', 'hidden', array('attr' => array('class' => 'token')))
             ->add('submit', 'submit',
                 array('label' => 'Purchase')
             )
@@ -77,7 +98,24 @@ class DefaultController extends Controller
         $form->handleRequest($request);
 
         if($form->isValid()){
-            var_dump($form->getData());
+            $data = $form->getData();
+            $stripe = $this->get('stripe');
+            $response = $stripe->processCheckout($pet->getPrice(), $data['token']);
+            if (isset($response['error'])){
+
+                $request->getSession()->getFlashBag()->add(
+                    'error',
+                    'Oops: '.$response['error']
+                );
+            } else {
+
+                $request->getSession()->getFlashBag()->add(
+                    'notice',
+                    'Yay! Congratulations on your new pet.  We will traffic it to you right away'
+                );
+
+                return $this->redirect($this->generateUrl(''));
+            }
         }
 
 

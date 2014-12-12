@@ -3,10 +3,12 @@
 {% form_theme form _self %}
 
 {% block form_row -%}
-    <div class="form-group">
-        {{- form_label(form) -}}
-        {{- form_errors(form) -}}
-        {{- form_widget(form) -}}
+    <div class="col-sm-12">
+        <div class="form-group">
+            {{- form_label(form) -}}
+            {{- form_errors(form) -}}
+            {{- form_widget(form) -}}
+        </div>
     </div>
 {%- endblock form_row %}
 
@@ -30,9 +32,52 @@
     </div>
 {%- endblock _form_thirds_row %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+    <script type="text/javascript">
+        // This identifies your website in the createToken call below
+        Stripe.setPublishableKey('{{ stripe_publishable_key }}');
+
+        var stripeResponseHandler = function(status, response) {
+            var $form = $('#payment-form');
+
+            if (response.error) {
+                // Show the errors on the form
+                $form.parent().find('.payment-errors').text(response.error.message);
+                $form.find('button').prop('disabled', false);
+            } else {
+                // token contains id, last4, and card type
+                var token = response.id;
+                console.log(response.card);
+                // Insert the token into the form so it gets submitted to the server
+                $('.token').val(token);
+                $('.creditcard').val('************'+response.card.last4);
+                // and re-submit
+                $form.get(0).submit();
+            }
+        };
+
+        jQuery(function($) {
+            $('#payment-form').submit(function(e) {
+                var $form = $(this);
+
+                // Disable the submit button to prevent repeated clicks
+                $form.find('button').prop('disabled', true);
+
+                Stripe.card.createToken($form, stripeResponseHandler);
+
+                // Prevent the form from submitting with the default action
+                return false;
+            });
+        });
+    </script>
+{% endblock %}
 
 {% block body %}
 <div class="col-sm-6">
+    <span class="payment-errors"></span>
     {{ form(form) }}
 </div>
 <div class="well col-sm-6">
