@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints\Luhn;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/pet/{pet_id}/buy")
+     * @Route("/pet/{pet_id}/buy", name="buy")
      * @Template()
      */
     public function buyAction(Request $request, $pet_id)
@@ -20,44 +20,32 @@ class DefaultController extends Controller
         $pet = $this->getDoctrine()->getRepository('PetTrafficKingStoreBundle:Pet')->find($pet_id);
         $form = $this->createFormBuilder(null, array('attr' => array('id' => 'payment-form')))
             ->add('firstname', 'text',
-                array('attr' => array('class' => 'form-control'),
-                'label' => 'First',
-                'block_name' => 'half',
+                array(
+                    'label' => 'First',
+                    'block_name' => 'half',
                 )
             )
             ->add('lastname', 'text',
-                array('attr' => array('class' => 'form-control'),
-                'label' => 'Last',
-                'block_name' => 'half',
-
+                array(
+                    'label' => 'Last',
+                    'block_name' => 'half',
                 )
             )
-            ->add('email', 'email',
-                array('attr' => array('class' => 'form-control'),
-                    'constraints' => array(
-                        new Email(),
-                    ),
-                )
-            )
-            ->add('address', 'text',
-                array('attr' => array('class' => 'form-control'))
-            )
+            ->add('email', 'email', array('constraints' => array(new Email())))
+            ->add('address', 'text')
             ->add('city', 'text',
                 array(
-                    'attr' => array('class' => 'form-control', 'placeholder' => 'City'),
+                    'attr' => array('placeholder' => 'City'),
                     'block_name' => 'thirds',
                 )
             )
-            ->add('state', 'choice',
+            ->add('state', 'text',
                 array(
-                    'attr' => array('class' => 'form-control'),
                     'block_name' => 'thirds',
-                    'choices' => array('Michigan', 'Minnesota', 'Missouri')
                 )
             )
             ->add('zip', 'text',
                 array(
-                    'attr' => array('class' => 'form-control'),
                     'block_name' => 'thirds',
                 )
             )
@@ -68,21 +56,21 @@ class DefaultController extends Controller
             )
             ->add('expmonth', 'text',
                 array(
-                    'attr' => array('class' => 'form-control', 'data-stripe' => 'exp-month'),
+                    'attr' => array('data-stripe' => 'exp-month'),
                     'label' => 'Expiration Month',
                     'block_name' => 'thirds',
                 )
             )
             ->add('expyear', 'text',
                 array(
-                    'attr' => array('class' => 'form-control', 'data-stripe' => 'exp-year'),
+                    'attr' => array('data-stripe' => 'exp-year'),
                     'label' => 'Expiration Year',
                     'block_name' => 'thirds',
                 )
             )
             ->add('cvv', 'text',
                 array(
-                    'attr' => array('class' => 'form-control', 'data-stripe' => 'cvc'),
+                    'attr' => array('data-stripe' => 'cvc'),
                     'label' => 'CVV',
                     'block_name' => 'thirds',
 

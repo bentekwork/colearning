@@ -41,6 +41,8 @@
                     <p>Breed: {{ entity.breed }}</p>
                     <p>Color: {{ entity.color }}</p>
                     <a href="{{ path('_show', { 'id': entity.id }) }}" class="btn btn-primary">Details</a>
+                    <a href="{{ path('buy', { 'pet_id': entity.id }) }}" class="btn btn-primary">Buy</a>
+
                     {% if is_granted('ROLE_ADMIN') %}
                         <a class="btn btn-primary" href="{{ path('_edit', { 'id': entity.id }) }}">Edit {{ entity.name }}</a>
                     {% endif %}

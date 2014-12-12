@@ -1,36 +1,29 @@
 {% extends '::base.html.twig' %}
 
-{% form_theme form _self %}
+{% form_theme form 'PetTrafficKingStoreBundle:Form:forms.html.twig' %}
 
-{% block form_row -%}
-    <div class="col-sm-12">
-        <div class="form-group">
-            {{- form_label(form) -}}
-            {{- form_errors(form) -}}
-            {{- form_widget(form) -}}
-        </div>
-    </div>
-{%- endblock form_row %}
+{% block body %}
+<div class="col-sm-6">
+    <span class="payment-errors"></span>
+    {{ form(form) }}
+</div>
+<div class="well col-sm-6">
+    <ul class="list-group">
+        <li class="list-group-item">ID: {{ pet.id}}</li>
+        <li class="list-group-item">Name: {{ pet.name}}</li>
+        <li class="list-group-item">Temperament: {{ pet.temperament }}</li>
+        <li class="list-group-item">Breed: {{ pet.breed }}</li>
+        <li class="list-group-item">Type: {{ pet.type }}</li>
+        <li class="list-group-item">Color: {{ pet.color }}</li>
+    </ul>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <h2 class="list-group-item-heading">Price: ${{ pet.price }}</h2>
+        </li>
+    </ul>
+</div>
 
-{% block _form_half_row -%}
-    <div class="col-sm-6">
-        <div class="form-group">
-            {{- form_label(form) -}}
-            {{- form_errors(form) -}}
-            {{- form_widget(form) -}}
-        </div>
-    </div>
-{%- endblock _form_half_row %}
-
-{% block _form_thirds_row -%}
-    <div class="col-sm-4">
-        <div class="form-group">
-            {{- form_label(form) -}}
-            {{- form_errors(form) -}}
-            {{- form_widget(form) -}}
-        </div>
-    </div>
-{%- endblock _form_thirds_row %}
+{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -73,27 +66,4 @@
             });
         });
     </script>
-{% endblock %}
-
-{% block body %}
-<div class="col-sm-6">
-    <span class="payment-errors"></span>
-    {{ form(form) }}
-</div>
-<div class="well col-sm-6">
-    <ul class="list-group">
-        <li class="list-group-item">ID: {{ pet.id}}</li>
-        <li class="list-group-item">Name: {{ pet.name}}</li>
-        <li class="list-group-item">Temperament: {{ pet.temperament }}</li>
-        <li class="list-group-item">Breed: {{ pet.breed }}</li>
-        <li class="list-group-item">Type: {{ pet.type }}</li>
-        <li class="list-group-item">Color: {{ pet.color }}</li>
-    </ul>
-    <ul class="list-group">
-        <li class="list-group-item">
-            <h2 class="list-group-item-heading">Price: ${{ pet.price }}</h2>
-        </li>
-    </ul>
-</div>
-
 {% endblock %}

@@ -1,16 +1,22 @@
 {% extends '::base.html.twig' %}
 
+{% form_theme edit_form 'PetTrafficKingStoreBundle:Form:forms.html.twig' %}
+{% form_theme delete_form 'PetTrafficKingStoreBundle:Form:forms.html.twig' %}
+
 {% block body -%}
-    <h1>Pet edit</h1>
+    <div class="well col-sm-4 col-sm-offset-3">
+        <div class="col-sm-4 col-sm-offset-4">
+            <a class="btn btn-primary" href="{{ path('')}}">Back to List</a>
+        </div>
+        <div class="col-sm-4">
+            {{ form(delete_form) }}
+        </div>
+        <div class="col-sm-12">
 
-    {{ form(edit_form) }}
+        <h1>Edit Pet</h1>
+            {{ form(edit_form) }}
+        </div>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    </div>
+
 {% endblock %}

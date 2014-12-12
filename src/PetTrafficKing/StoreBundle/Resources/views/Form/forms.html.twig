@@ -1,0 +1,71 @@
+{% block form_row -%}
+    <div class="col-sm-12">
+        <div class="form-group">
+            {{- form_label(form) -}}
+            {{- form_errors(form) -}}
+            {{- form_widget(form) -}}
+        </div>
+    </div>
+{%- endblock form_row %}
+
+{% block _form_half_row -%}
+    <div class="col-sm-6">
+        <div class="form-group">
+            {{- form_label(form) -}}
+            {{- form_errors(form) -}}
+            {{- form_widget(form) -}}
+        </div>
+    </div>
+{%- endblock _form_half_row %}
+
+{% block _form_thirds_row -%}
+    <div class="col-sm-4">
+        <div class="form-group">
+            {{- form_label(form) -}}
+            {{- form_errors(form) -}}
+            {{- form_widget(form) -}}
+        </div>
+    </div>
+{%- endblock _form_thirds_row %}
+
+{% block widget_attributes -%}
+    id="{{ id }}" name="{{ full_name }}"
+    {%- if read_only %} readonly="readonly"{% endif -%}
+    {%- if disabled %} disabled="disabled"{% endif -%}
+    {%- if required %} required="required"{% endif -%}
+    {% if attr.class is defined %}
+        {%  set attr = attr|merge({'class': attr.class ~ ' form-control'}) %}
+    {% else %}
+        {%  set attr = attr|merge({'class': 'form-control'}) %}
+    {% endif %}
+    {%- for attrname, attrvalue in attr -%}
+        {{- " " -}}
+        {%- if attrname in ['placeholder', 'title'] -%}
+            {{- attrname }}="{{ attrvalue|trans({}, translation_domain) }}"
+        {%- elseif attrvalue is sameas(true) -%}
+            {{- attrname }}="{{ attrname }}"
+        {%- elseif attrvalue is not sameas(false) -%}
+            {{- attrname }}="{{ attrvalue }}"
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock widget_attributes %}
+
+{% block button_attributes -%}
+    id="{{ id }}" name="{{ full_name }}"{% if disabled %} disabled="disabled"{% endif -%}
+    {% if attr.class is defined %}
+        {%  set attr = attr|merge({'class': attr.class ~ ' btn btn-primary'}) %}
+    {% else %}
+        {%  set attr = attr|merge({'class': 'btn btn-primary'}) %}
+    {% endif %}
+
+    {%- for attrname, attrvalue in attr -%}
+        {{- " " -}}
+        {%- if attrname in ['placeholder', 'title'] -%}
+            {{- attrname }}="{{ attrvalue|trans({}, translation_domain) }}"
+        {%- elseif attrvalue is sameas(true) -%}
+            {{- attrname }}="{{ attrname }}"
+        {%- elseif attrvalue is not sameas(false) -%}
+            {{- attrname }}="{{ attrvalue }}"
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock button_attributes %}
